@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   closeCartButton.addEventListener('click', closeCart);
 
-  goods.forEach(function (btn, i) {
+  goodsButton.forEach(function (btn, i) {
     btn.addEventListener('click', () => {
       let cloneGoods = goods[i].cloneNode(true),
         trigger = cloneGoods.querySelector('button'),
@@ -34,7 +34,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
       trigger.remove();
 
-      delGoodsButton.classList.add('goods__item-remove')
+      confirmAnimate();
+
+      delGoodsButton.classList.add('goods__item-remove');
       cloneGoods.appendChild(delGoodsButton);
       delGoodsButton.innerHTML = '&times;';
 
@@ -42,7 +44,79 @@ window.addEventListener('DOMContentLoaded', () => {
       if (empty) {
         empty.remove();
       }
+
+      calcBadge();
+      calcTotal();
+      removeGoods();
     });
   });
 
+  function sliceTitle() {
+
+    goodsTitle.forEach(function (str) {
+
+      if (str.textContent.length <= 70) {
+        return;
+      } else {
+        const newStr = `${str.textContent.slice(0, 71)}...`;
+        str.textContent = newStr;
+      }
+
+    });
+
+  }
+  sliceTitle();
+
+  function confirmAnimate() {
+    confirm.style.display = 'block';
+    let counter = 100;
+
+    const timer = setInterval(() => {
+      if (counter >= 11) {
+        counter--;
+        confirm.style.transform = `translateY(-${counter}px)`;
+        confirm.style.opacity = `.${counter}`;
+      } else {
+        clearInterval(timer);
+        confirm.style.display = 'none';
+      }
+    }, 1);
+  }
+
+  function calcBadge() {
+    let numGoods = cartWrapper.querySelectorAll('.goods__item');
+
+    cartBadge.textContent = numGoods.length;
+
+    if (numGoods.length == 0) {
+      let newEmpty = document.createElement('div');
+
+      newEmpty.classList.add('empty');
+      newEmpty.innerHTML = 'Ваша корзина опять пуста';
+      cartWrapper.appendChild(newEmpty);
+    }
+  }
+
+  function calcTotal() {
+    const priceGoods = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span');
+    let totalPrice = 0;
+
+    priceGoods.forEach(function (price) {
+      totalPrice += +price.textContent;
+    });
+    total.textContent = totalPrice;
+  }
+
+  function removeGoods() {
+    const removeGoodsButton = cartWrapper.querySelectorAll('.goods__item-remove');
+
+    removeGoodsButton.forEach(function (close) {
+      close.addEventListener('click', () => {
+        close.parentElement.remove();
+
+        calcBadge();
+        calcTotal();
+      });
+    });
+  }
 });
