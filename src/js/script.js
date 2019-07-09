@@ -66,7 +66,18 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
 
         trigger.remove(); // удаляем кнопку
 
-        confirmAnimate(); // выполняем анимацию
+        confirmAnimate({
+          duration: 1000,
+          timing: function (timeFraction) {
+            return timeFraction;
+          },
+          draw: function (progress) {
+            if (progress >= 0) {
+              confirm.style.opacity = `${(progress * -1) + 1}`;
+              confirm.style.transform = `translateY(${(progress * 150)}px)`;
+            }
+          }
+        }); // выполняем анимацию
 
         delGoodsButton.classList.add('goods__item-remove'); // вешаем класс на созданный блок
         cloneGoods.appendChild(delGoodsButton); // добавляем созданный блок в склонированную ноду
@@ -98,20 +109,26 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
     }
     sliceTitle(); // вызываем функцию
 
-    function confirmAnimate() { // функция для создания анимации
+    function confirmAnimate(options) { // функция для создания анимации
       confirm.style.display = 'block'; // делаем блок видимым
-      let counter = 100; // ставим счётчик
 
-      const timer = setInterval(() => { // при интервале в 0.01с
-        if (counter >= 11) { // если счётчик больше/равен 11
-          counter--; // понижаем
-          confirm.style.transform = `translateY(-${counter}px)`; //меняем позицию
-          confirm.style.opacity = `.${counter}`; // меняем прозрачность
-        } else {
-          clearInterval(timer); // удаляем интервал, чтобы не выполнялось при следующем нажатии два
-          confirm.style.display = 'none'; // скрываем блок
+      let start = performance.now();
+
+      requestAnimationFrame(function animate(time) {
+        // timeFraction от 0 до 1
+        let timeFraction = (time - start) / options.duration;
+        if (timeFraction > 1) timeFraction = 1;
+
+        // текущее состояние анимации
+        let progress = options.timing(timeFraction)
+
+        options.draw(progress);
+
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
         }
-      }, 1);
+
+      });
     }
 
     function calcGoods() { // функция для подсчёта товаров в корзине
@@ -153,3 +170,91 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
   });
 
 });
+
+
+
+
+
+
+
+
+
+
+
+// train.onclick = function() {
+//   animate(function(timePassed) {
+//     train.style.left = timePassed / 5 + 'px';
+//   }, 2000);
+// };
+
+// // Рисует функция draw
+// // Продолжительность анимации duration
+// function animate(draw, duration) {
+//   var start = performance.now();
+
+//   requestAnimationFrame(function animate(time) {
+//     // определить, сколько прошло времени с начала анимации
+//     var timePassed = time - start;
+
+//     console.log(time, start)
+//       // возможно небольшое превышение времени, в этом случае зафиксировать конец
+//     if (timePassed > duration) timePassed = duration;
+
+//     // нарисовать состояние анимации в момент timePassed
+//     draw(timePassed);
+
+//     // если время анимации не закончилось - запланировать ещё кадр
+//     if (timePassed < duration) {
+//       requestAnimationFrame(animate);
+//     }
+
+//   });
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// function animate(options) {
+
+//   var start = performance.now();
+
+//   requestAnimationFrame(function animate(time) {
+//     // timeFraction от 0 до 1
+//     var timeFraction = (time - start) / options.duration;
+//     if (timeFraction > 1) timeFraction = 1;
+
+//     // текущее состояние анимации
+//     var progress = options.timing(timeFraction)
+
+//     options.draw(progress);
+
+//     if (timeFraction < 1) {
+//       requestAnimationFrame(animate);
+//     }
+
+//   });
+// }
+
+
+
+
+
+// elem.onclick = function() {
+//   animate({
+//     duration: 1000,
+//     timing: function(timeFraction) {
+//       return timeFraction;
+//     },
+//     draw: function(progress) {
+//       elem.style.width = progress * 100 + '%';
+//     }
+//   });
+// };
