@@ -1,45 +1,59 @@
 body
     margin: 0
-.logo   
+.logo
     margin: 25px 0
 .search
     display: flex
     margin: 0 auto
-    &__input    
+    &__input
         width: 230px
-        height: 30px 
+        height: 30px
         border: 1px solid rgba(0,0,0,.1)
         border-bottom-left-radius: 4px
         border-top-left-radius: 4px
         padding: 0 15px
-        &:focus 
+        &:focus
             outline: none
-    button 
-        display: flex 
+    button
+        display: flex
         align-items: center
         width: 30px
         height: 30px
         background: #DC3E2A
-        border: none 
+        border: none
         border-radius: 0px 4px 4px 0px
         cursor: pointer
-        &:focus 
+        &:focus
             outline: none
 .nav
-    display: flex 
+    display: flex
     justify-content: center
     align-items: center
     cursor: pointer
-    &__item 
+    &:hover &__item #like__img
+        fill: #dc3e2a
+    &:hover #cart__img
+        transform: translateX(0px)
+    &__item
         position: relative
-    &__title 
+        #like__img
+            fill: none
+            stroke: #dc3e2a
+            stroke-width: 1px
+            &:hover
+                fill: #dc3e2a
+        &#cart__img
+            transform: translateX(-4px)
+            margin-right: 3px
+            transition: .3s
+    &__title
         margin-left: 10px
-    &__badge 
+    &__badge
         position: absolute
-        top: 2px
+        top: 0
         right: -5px
         min-width: 16px
-        height: 10px
+        height: 12px
         padding: 0 3px
         text-align: center
         background: #DC3E2A
@@ -49,42 +63,42 @@ body
         color: #fff
 .breadcrumbs
     color: rgba(0,0,0,.3)
-    a 
+    a
         color: rgba(0,0,0,.3)
-.goods 
+.goods
     margin-top: 25px
-    &__wrapper 
+    &__wrapper
         display: flex
         flex-wrap: wrap
-    &__item 
+    &__item
         position: relative
         width: 240px
-        padding: 10px 
+        padding: 10px
         box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.2)
         border-radius: 4px
         margin-bottom: 40px
         margin-right: 35px
         transition: 0.3s all
-        &:hover 
+        &:hover
             box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.3)
         &-remove
             position: absolute
             top: -10px
             right: -10px
-            width: 25px
+            min-width: 25px
             height: 25px
             text-align: center
             line-height: 22px
             border: 1px solid rgba(0,0,0,.1)
-            border-radius: 100%
+            border-radius: 50%
             background-color: #fff
             cursor: pointer
             &:hover
                 color: #DC3E2A
-    &__img 
+    &__img
         width: 220px
         object-fit: cover
-    &__colors 
+    &__colors
         font-size: 12px
         text-align: center
         margin-top: 5px
@@ -92,7 +106,7 @@ body
     &__title
         color: #003267
         margin-top: 5px
-    &__price 
+    &__price
         text-align: center
         color: #DC3E2A
         margin-top: 5px
@@ -101,19 +115,39 @@ body
         width: 100%
         height: 40px
         background-color: #DC3E2A
-        border: none 
+        border: none
         outline: none
         margin-top: 20px
         color: #ffffff
         font-weight: bold
-        cursor: pointer 
-        &:focus 
+        cursor: pointer
+        &:focus
             outline: none
-        &:hover 
+        &:hover
             box-shadow: 0 0 15px rgba(220, 62, 42, .7)
-.cart 
+    &__like
+        position: absolute
+        top: 10px
+        right: 10px
+        width: 50px
+        height: 50px
+        background-color: white
+        border-radius: 50%
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2)
+        cursor: pointer
+        visibility: hidden
+        svg
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            fill: none
+            stroke: #dc3e2a
+            stroke-width: 1px
+            stroke-opacity: .7
+.cart
     display: none
-    position: fixed 
+    position: fixed
     top: 0
     width: 100%
     height: 100%
@@ -129,26 +163,26 @@ body
         transform: translateX(-50%) translateY(-50%)
         padding: 25px
         overflow: auto
-    &__title 
+    &__title
         font-size: 28px
         color: rgba(0,0,0, .4)
     &__wrapper
-        display: flex 
+        display: flex
         flex-wrap: wrap
         margin-top: 25px
-        .empty  
+        .empty
             font-size: 24px
             color: rgba(0,0,0, .4)
         .goods__item
             margin-right: 75px
-    &__close 
+    &__close
         position: absolute
         top: 25px
         right: 25px
         cursor: pointer
-    &__total 
+    &__total
         font-size: 18px
-        span 
+        span
             color: #DC3E2A
     &__confirm
         width: 280px
@@ -156,16 +190,55 @@ body
         display: block
         margin: 0 auto
         background-color: #DC3E2A
-        border: none 
+        border: none
         outline: none
         margin-top: 20px
         color: #ffffff
         font-weight: bold
-        cursor: pointer 
-        &:focus 
+        cursor: pointer
+        &:focus
             outline: none
-        &:hover 
+        &:hover
             box-shadow: 0 0 15px rgba(220, 62, 42, .7)
+.like
+    display: none
+    position: fixed
+    top: 0
+    width: 100%
+    height: 100%
+    background-color: rgba(0,0,0, .3)
+    &__body
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 1024px
+        min-height: 200px
+        max-height: 640px
+        background-color: #fff
+        transform: translateX(-50%) translateY(-50%)
+        padding: 25px
+        overflow: auto
+    &__title
+        font-size: 28px
+        color: rgba(0,0,0, .4)
+    &__wrapper
+        display: flex
+        flex-wrap: wrap
+        margin-top: 25px
+        .empty
+            font-size: 24px
+            color: rgba(0,0,0, .4)
+        .goods__item
+            margin-right: 75px
+    &__close
+        position: absolute
+        top: 25px
+        right: 25px
+        cursor: pointer
+    &__count
+        font-size: 18px
+        span
+            color: #DC3E2A
 .confirm
     display: none
     position: fixed
@@ -173,5 +246,5 @@ body
     right: 50px
     width: 100px
     height: 100px
-    img 
+    img
         width: 100%

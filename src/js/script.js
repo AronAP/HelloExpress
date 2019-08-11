@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', () => { // при загрузке DOM
+window.addEventListener('DOMContentLoaded', () => {
 
   const loadContent = async (url, callback) => { // функция для вызова базы данных и всех остальных функций
     await fetch(url) // promise: пока фетч не загрузиться ПОЛНОСТЬЮ
@@ -8,63 +8,93 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
     callback(); // вызови функцию после ПОЛНОЙ загрузки фетч
   }
 
-  function makeElement(arr) { // функция создания карточек товаров
-    const goodsWrapper = document.querySelector('.goods__wrapper'); // находим блок для товаров
+  function makeElement(arr) {
+    const goodsWrapper = document.querySelector('.goods__wrapper');
 
-    arr.forEach(function (item) { // для каждого элемента массива
-      let newBlock = document.createElement('div'); // создаём новый блок
+    arr.forEach(item => {
+      let newBlock = document.createElement('div');
 
-      newBlock.classList.add('goods__item'); // навешиваем класс
+      newBlock.classList.add('goods__item');
       newBlock.innerHTML = `
-        <img class="goods__img" src="${item.url}" alt="phone">
-        <div class="goods__colors">Доступно цветов: 4</div>
-        <div class="goods__title">${item.title}</div>
-        <div class="goods__price">
-            <span>${item.price}</span> грн/шт
-        </div>
-        <button class="goods__btn">Добавить в корзину</button>
-      `; // вставляем HTML и в него данные с массива
-      goodsWrapper.appendChild(newBlock); // добавляем в блок с товаром
+            <img class="goods__img" src="${item.url}" alt="phone">
+            <div class="goods__colors">Доступно цветов: 4</div>
+            <div class="goods__title">${item.title}</div>
+            <div class="goods__price">
+                <span>${item.price}</span> грн/шт
+            </div>
+            <button class="goods__btn">Добавить в корзину</button>
+            <div class="goods__like">
+              <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:svg="http://www.w3.org/2000/svg">
+                  <path
+                      d="m12.38012,6.63838c4.60578,-13.23323 22.65142,0 0,17.01416c-22.65142,-17.01416 -4.60578,-30.24739 0,-17.01416z" />
+              </svg>
+            </div>
+          `;
+      goodsWrapper.appendChild(newBlock);
     });
 
   }
 
-  loadContent('js/db.json', () => { // вызываем функцию
+  loadContent('js/db.json', () => {
 
     const cart = document.querySelector('.cart'),
-      total = document.querySelector('.cart__total > span'),
+      like = document.querySelector('.like'),
       cartWrapper = document.querySelector('.cart__wrapper'),
+      likeWrapper = document.querySelector('.like__wrapper'),
+      total = document.querySelector('.cart__total > span'),
+      countLike = document.querySelector('.like__count > span'),
       closeCartButton = document.querySelector('.cart__close'),
+      closeLikeList = document.querySelector('.like__close'),
       cartButton = document.querySelector('#cart'),
+      likeListButton = document.querySelector('#like'),
       cartBadge = document.querySelector('.nav__badge'),
       goods = document.querySelectorAll('.goods__item'),
       goodsTitle = document.querySelectorAll('.goods__title'),
       goodsButton = document.querySelectorAll('.goods__btn'),
-      confirm = document.querySelector('.confirm');
+      likeButton = document.querySelectorAll('.goods__like'),
+      likePicButton = document.querySelectorAll('.goods__like > svg'),
+      confirm = document.querySelector('.confirm'),
+      cartConfirm = document.querySelector('.cart__confirm'),
+      emptyCart = cartWrapper.querySelector('.empty'),
+      emptyLike = likeWrapper.querySelector('.empty');
 
-    function openCart() { // функция открытия корзины
-      cart.style.display = 'block';
+    function open(modal, removeFunc) {
+      modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
-      removeGoods(); // следим за кликами через функцию удаления товаров
+      removeFunc();
     }
 
-    function closeCart() { // функция закрытия корзины
-      cart.style.display = 'none';
+    cartButton.addEventListener('click', function () {
+      open(cart, removeCartGoods)
+    });
+
+    likeListButton.addEventListener('click', function () {
+      open(like, removeLikesGoods)
+    });
+
+    function close(modal) {
+      modal.style.display = 'none';
       document.body.style.overflow = '';
     }
 
-    cartButton.addEventListener('click', openCart); // вешаем события открытия по клику на корзину
+    closeCartButton.addEventListener('click', function () {
+      close(cart)
+    });
+    closeLikeList.addEventListener('click', function () {
+      close(like)
+    });
 
-    closeCartButton.addEventListener('click', closeCart); // вешаем события закрытия по клику на корзину
+    // ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
+    goodsButton.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        let cloneGoods = goods[i].cloneNode(true),
+          trigger = cloneGoods.querySelector('button'),
+          triggerLike = cloneGoods.querySelector('.goods__like'),
+          delGoodsButton = document.createElement('div');
 
-    goodsButton.forEach(function (btn, i) { // для каждой кнопки
-      btn.addEventListener('click', () => { // вешаем клик на кнопку
-        let cloneGoods = goods[i].cloneNode(true), // клонируем ноду
-          trigger = cloneGoods.querySelector('button'), // находим кнопку каждого товара
-          delGoodsButton = document.createElement('div'), // создаем пустой блок
-          empty = cartWrapper.querySelector('.empty'); // находим в корзине блок с надписью
-
-        trigger.remove(); // удаляем кнопку
+        trigger.remove();
+        triggerLike.remove();
 
         confirmAnimate({
           duration: 1000,
@@ -77,40 +107,41 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
               confirm.style.transform = `translateY(${(progress * 150)}px)`;
             }
           }
-        }); // выполняем анимацию
+        });
 
-        delGoodsButton.classList.add('goods__item-remove'); // вешаем класс на созданный блок
-        cloneGoods.appendChild(delGoodsButton); // добавляем созданный блок в склонированную ноду
-        delGoodsButton.innerHTML = '&times;'; // добавлем крестик в созданный блок
+        delGoodsButton.classList.add('goods__item-remove');
+        cloneGoods.appendChild(delGoodsButton);
+        delGoodsButton.innerHTML = '&times;';
 
-        cartWrapper.appendChild(cloneGoods); // добавляем эллемент в корзину
-        if (empty) { // если есть надпись, то удаляем
-          empty.remove();
+        cartWrapper.appendChild(cloneGoods);
+
+        if (emptyCart) {
+          emptyCart.style.display = 'none';
         }
 
-        calcGoods(); // выполняем подсчёт товаров в корзине
-        calcTotal(); // выполняем подсчёт суммы
+        countGoods(cartWrapper, cartBadge, emptyCart);
+        calcTotalPrice();
       });
     });
 
-    function sliceTitle() { // функция для обрезки оглавлений у товаров
+    function sliceTitle() {
 
-      goodsTitle.forEach(function (str) { // для оглавления товара
+      goodsTitle.forEach(str => {
 
-        if (str.textContent.length <= 49) { //если меньше n слов, то
-          return; // ничего не делаем
-        } else { // если больше
-          const newStr = `${str.textContent.slice(0, 49)}...`; // обрезаем и добавляем "..."
-          str.textContent = newStr; // перезаписываем
+        if (str.textContent.length <= 49) {
+          return;
+        } else {
+          const newStr = `${str.textContent.slice(0, 49)}...`;
+          str.textContent = newStr;
         }
 
       });
 
     }
-    sliceTitle(); // вызываем функцию
+    sliceTitle();
 
-    function confirmAnimate(options) { // функция для создания анимации
-      confirm.style.display = 'block'; // делаем блок видимым
+    function confirmAnimate(options) {
+      confirm.style.display = 'block';
 
       let start = performance.now();
 
@@ -131,42 +162,163 @@ window.addEventListener('DOMContentLoaded', () => { // при загрузке D
       });
     }
 
-    function calcGoods() { // функция для подсчёта товаров в корзине
-      let numGoods = cartWrapper.querySelectorAll('.goods__item'); // находим товары в корзине
+    function countGoods(wrapper, countSpan, emptyBlock) {
+      let numGoods = wrapper.querySelectorAll('.goods__item');
 
-      cartBadge.textContent = numGoods.length; // находим к-ство товаров в корзине и подставляем в бэйдж
+      countSpan.textContent = numGoods.length;
 
-      if (numGoods.length == 0) { // если товаров нету
-        let newEmpty = document.createElement('div'); // создаём новый блок
-
-        newEmpty.classList.add('empty'); // вешаем класс
-        newEmpty.innerHTML = 'Ваша корзина опять пуста'; // добавляем текст в блок
-        cartWrapper.appendChild(newEmpty); // добавляем в блок с корзиной
+      if (numGoods.length == 0) {
+        emptyBlock.style.display = 'block';
       }
     }
 
-    function calcTotal() { // функция подсчёта суммы в корзине
-      const priceGoods = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span'); // ищем всё цены на товары в корзине
+    function calcTotalPrice() {
+      const priceGoods = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span');
       let totalPrice = 0;
 
-      priceGoods.forEach(function (price) { // каждую цену товара в корзине
-        totalPrice += +price.textContent; // суммируем вместе
+      priceGoods.forEach(price => {
+        totalPrice += +price.textContent;
       });
-      total.textContent = totalPrice; // перезаписываем
+      total.textContent = totalPrice;
     }
 
-    function removeGoods() { // функция удаления товара из корзины
-      const removeGoodsButton = cartWrapper.querySelectorAll('.goods__item-remove'); // находим все крестики товаров в корзине
+    function removeCartGoods() {
+      const removeGoodsButton = cartWrapper.querySelectorAll('.goods__item-remove');
 
-      removeGoodsButton.forEach(function (close) { // для каждого крестика
-        close.addEventListener('click', () => { // при клике по нём
-          close.parentElement.remove(); // удали родителя(товар)
+      removeGoodsButton.forEach(close => {
+        close.addEventListener('click', () => {
+          close.parentElement.remove();
 
-          calcGoods(); // пересчитай к-ство товаро
-          calcTotal(); // пересчитай общую сумму товаров
+          countGoods(cartWrapper, cartBadge, emptyCart);
+          calcTotalPrice();
         });
       });
     }
+
+    // Показать/скрыть кнопку "Добавить в избранное"
+    goods.forEach(item => {
+      const likeBtn = item.querySelector('.goods__like');
+
+      item.addEventListener('mouseover', () => {
+        likeBtn.style.visibility = 'visible';
+      });
+
+      item.addEventListener('mouseout', () => {
+        likeBtn.style.visibility = 'hidden';
+      });
+    })
+
+    // ДОБАВЛЕНИЕ ТОВАРОВ В ИЗБРАННОЕ
+    likeButton.forEach((btn, i) => {
+
+      let svg = likePicButton[i];
+      svg.style.fill = 'none';
+
+      btn.addEventListener('mouseover', () => {
+        svg.style.strokeOpacity = '1';
+        btn.style.boxShadow = '1px 1px 5px rgba(0, 0, 0, 0.4)';
+      });
+
+      btn.addEventListener('mouseout', () => {
+        svg.style.strokeOpacity = '.7';
+        btn.style.boxShadow = '1px 1px 5px rgba(0, 0, 0, 0.2)';
+      });
+
+      btn.addEventListener('click', () => {
+
+        svg.style.fill = (svg.style.fill == 'none') ? 'rgb(220, 62, 42)' : 'none';
+        // Если кнопка добавить в избранное не нажата
+        if (svg.style.fill == 'rgb(220, 62, 42)') {
+
+          let cloneGoods = goods[i].cloneNode(true),
+            trigger = cloneGoods.querySelector('button'),
+            triggerLike = cloneGoods.querySelector('.goods__like'),
+            delGoodsButton = document.createElement('div');
+
+          trigger.remove();
+          triggerLike.remove();
+
+          delGoodsButton.classList.add('goods__item-remove');
+          cloneGoods.appendChild(delGoodsButton);
+          delGoodsButton.innerHTML = '&times;';
+          likeWrapper.appendChild(cloneGoods);
+
+          if (emptyLike) {
+            emptyLike.style.display = 'none';
+          }
+        } else {
+          // Если кнопка уже нажата
+          const cloneLikeGoods = likeWrapper.querySelectorAll('.goods__item');
+
+          cloneLikeGoods.forEach(cloneItem => {
+            const cloneLikeGoodsTitle = cloneItem.querySelector('.goods__title'),
+              cloneLikeGoodsTitleText = cloneLikeGoodsTitle.textContent,
+              parent = btn.parentElement,
+              parentTitle = parent.querySelector('.goods__title'),
+              parentTitleText = parentTitle.textContent;
+
+            if (cloneLikeGoodsTitleText == parentTitleText) {
+              cloneItem.remove();
+            }
+          });
+
+        }
+
+        countGoods(likeWrapper, countLike, emptyLike);
+
+      });
+    });
+
+    function removeLikesGoods() {
+      const removeLikesButton = likeWrapper.querySelectorAll('.goods__item-remove');
+
+      removeLikesButton.forEach(close => {
+        close.addEventListener('click', () => {
+
+          let parent = close.parentElement,
+            parentTitle = parent.querySelector('.goods__title'),
+            parentTitleText = parentTitle.textContent;
+
+          goodsTitle.forEach(str => {
+
+            if (str.textContent == parentTitleText) {
+              let parentStr = str.parentElement,
+                parentLikePicButton = parentStr.querySelector('.goods__like > svg');
+
+              parentLikePicButton.style.fill = 'none';
+            }
+
+          });
+
+          parent.remove();
+
+          countGoods(likeWrapper, countLike, emptyLike);
+        });
+      });
+    }
+
+    // Оформления заказа
+    cartConfirm.addEventListener('click', () => {
+      let allItems = cartWrapper.querySelectorAll('.goods__item');
+
+      if (allItems.length > 0) {
+        let totalPrice = +total.textContent;
+
+        allItems.forEach(item => {
+          item.remove();
+          countGoods(cartWrapper, cartBadge, emptyCart);
+        });
+
+        calcTotalPrice();
+        close(cart);
+
+        alert(`Ваш заказ на сумму ${totalPrice} грн оформлен.\nСпасибо!\n\nНаш оператор скоро свяжеться с Вами.`);
+      } else {
+        alert('Добавте хотя бы один продукт!');
+      }
+
+    });
+
   });
 
 });

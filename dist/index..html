@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello Express</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="logo"><img src="logo/logo.svg" alt="logo"></div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-lg-3">
+          <form class="search" action="#"><input type="text" placeholder="Я ищу..." class="search__input"> <button><img
+                src="icons/glass.svg" alt="search"></button></form>
+        </div>
+        <div class="col-lg-2">
+          <div class="nav" id="like">
+            <div class="nav__item"><svg id="like__img" width="25" height="25" xmlns="http://www.w3.org/2000/svg"
+                xmlns:svg="http://www.w3.org/2000/svg">
+                <path
+                  d="m12.38012,6.63838c4.60578,-13.23323 22.65142,0 0,17.01416c-22.65142,-17.01416 -4.60578,-30.24739 0,-17.01416z" />
+                </svg></div>
+            <div class="nav__title">Избранное</div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="nav" id="cart">
+            <div class="nav__item" id="cart__img"><img src="icons/cart.svg" alt="cart">
+              <div class="nav__badge">0</div>
+            </div>
+            <div class="nav__title">Корзина</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <hr>
+  <div class="container">
+    <div class="breadcrumbs"><a href="#">Главная</a> / <a href="#">Мобильные телефоны</a></div>
+  </div>
+  <div class="goods">
+    <div class="container">
+      <div class="goods__wrapper"></div>
+    </div>
+  </div>
+  <div class="cart">
+    <div class="cart__body">
+      <div class="cart__title">Корзина</div>
+      <div class="cart__total">Общая сумма: <span>0</span> грн</div>
+      <hr>
+      <div class="cart__wrapper">
+        <div class="empty">Ваша корзина пуста</div>
+      </div><button class="cart__confirm">Оформить заказ</button>
+      <div class="cart__close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg></div>
+    </div>
+  </div>
+  <div class="like">
+    <div class="like__body">
+      <div class="like__title">Избранное</div>
+      <div class="like__count">Кол-во товаров: <span>0</span></div>
+      <hr>
+      <div class="like__wrapper">
+        <div class="empty">Ваш список пуст</div>
+      </div>
+      <div class="like__close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg></div>
+    </div>
+  </div>
+  <div class="confirm"><img src="icons/confirm.svg" alt="confirm"></div>
+  <script src="js/script.min.js"></script>
+</body>
+
+</html>
