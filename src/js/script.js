@@ -1,5 +1,11 @@
 window.addEventListener('DOMContentLoaded', () => {
 
+  /**
+   * Подгружает данные на страницу с помощью fetch
+   *
+   * @param {*} url - ссылка на базу данных
+   * @param {*} callback - функция для работы с элементами на странице
+   */
   const loadContent = async (url, callback) => { // функция для вызова базы данных и всех остальных функций
     await fetch(url) // promise: пока фетч не загрузиться ПОЛНОСТЬЮ
       .then(response => response.json()) // promise: получаем ответ и преврати json в javascript обьект
@@ -8,6 +14,11 @@ window.addEventListener('DOMContentLoaded', () => {
     callback(); // вызови функцию после ПОЛНОЙ загрузки фетч
   }
 
+  /**
+   * Формирует карточку с товаром и добавляет её на страницу
+   *
+   * @param {*} arr - масив данных, сформированный из базы даных
+   */
   function makeElement(arr) {
     const goodsWrapper = document.querySelector('.goods__wrapper');
 
@@ -59,6 +70,12 @@ window.addEventListener('DOMContentLoaded', () => {
       emptyCart = cartWrapper.querySelector('.empty'),
       emptyLike = likeWrapper.querySelector('.empty');
 
+    /**
+     * Показывает модальное окно
+     *
+     * @param {*} modal - модальное окно, которое нужно открыть
+     * @param {*} removeFunc - функция для удаления добавленных товаров из модального окна
+     */
     function open(modal, removeFunc) {
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
@@ -73,6 +90,11 @@ window.addEventListener('DOMContentLoaded', () => {
       open(like, removeLikesGoods)
     });
 
+    /**
+     * Скрывает модальное окно
+     *
+     * @param {*} modal - модальное окно, которое нужно сткрыть
+     */
     function close(modal) {
       modal.style.display = 'none';
       document.body.style.overflow = '';
@@ -124,6 +146,10 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    /**
+     * Обрезает заголовки в карточках товаров
+     *
+     */
     function sliceTitle() {
 
       goodsTitle.forEach(str => {
@@ -140,6 +166,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     sliceTitle();
 
+    /**
+     * Анимация при добавлении товаров в корзину
+     *
+     * @param {*} options - параметры для анимации
+     */
     function confirmAnimate(options) {
       confirm.style.display = 'block';
 
@@ -162,6 +193,13 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    /**
+     * Подсчитывает число товаров в модальном окне
+     *
+     * @param {*} wrapper - обертка для товаров
+     * @param {*} countSpan - блок, с числом товаров
+     * @param {*} emptyBlock - блок с надписью "пусто"
+     */
     function countGoods(wrapper, countSpan, emptyBlock) {
       let numGoods = wrapper.querySelectorAll('.goods__item');
 
@@ -172,6 +210,10 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    /**
+     * Подсчитывает общую стоимость товаров
+     *
+     */
     function calcTotalPrice() {
       const priceGoods = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span');
       let totalPrice = 0;
@@ -182,6 +224,10 @@ window.addEventListener('DOMContentLoaded', () => {
       total.textContent = totalPrice;
     }
 
+    /**
+     * Удаляет товары с корзины
+     *
+     */
     function removeCartGoods() {
       const removeGoodsButton = cartWrapper.querySelectorAll('.goods__item-remove');
 
@@ -269,6 +315,10 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    /**
+     * Удаляет товары с избранных
+     *
+     */
     function removeLikesGoods() {
       const removeLikesButton = likeWrapper.querySelectorAll('.goods__item-remove');
 
