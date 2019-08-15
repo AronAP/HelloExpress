@@ -1,3 +1,5 @@
+'use strict';
+
 window.addEventListener('DOMContentLoaded', () => {
 
   /**
@@ -8,16 +10,16 @@ window.addEventListener('DOMContentLoaded', () => {
    */
   const loadContent = async (url, callback) => { // функция для вызова базы данных и всех остальных функций
     await fetch(url) // promise: пока фетч не загрузиться ПОЛНОСТЬЮ
-      .then(response => response.json()) // promise: получаем ответ и преврати json в javascript обьект
+      .then(response => response.json()) // promise: получаем ответ и преврати json в javascript объект
       .then(json => makeElement(json.goods)); // используй код в функции
 
     callback(); // вызови функцию после ПОЛНОЙ загрузки фетч
-  }
+  };
 
   /**
    * Формирует карточку с товаром и добавляет её на страницу
    *
-   * @param {*} arr - масив данных, сформированный из базы даных
+   * @param {*} arr - массив данных, сформированный из базы данных
    */
   function makeElement(arr) {
     const goodsWrapper = document.querySelector('.goods__wrapper');
@@ -38,7 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
               <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"
                   xmlns:svg="http://www.w3.org/2000/svg">
                   <path
-                      d="m12.38012,6.63838c4.60578,-13.23323 22.65142,0 0,17.01416c-22.65142,-17.01416 -4.60578,-30.24739 0,-17.01416z" />
+                      d="m12.38012,6.63838c4.60578,-13.23323 22.65142,
+                      0 0,17.01416c-22.65142,-17.01416 -4.60578,-30.24739 0,-17.01416z" />
               </svg>
             </div>
           `;
@@ -83,17 +86,17 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     cartButton.addEventListener('click', function () {
-      open(cart, removeCartGoods)
+      open(cart, removeCartGoods);
     });
 
     likeListButton.addEventListener('click', function () {
-      open(like, removeLikesGoods)
+      open(like, removeLikesGoods);
     });
 
     /**
      * Скрывает модальное окно
      *
-     * @param {*} modal - модальное окно, которое нужно сткрыть
+     * @param {*} modal - модальное окно, которое нужно скрыть
      */
     function close(modal) {
       modal.style.display = 'none';
@@ -101,10 +104,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     closeCartButton.addEventListener('click', function () {
-      close(cart)
+      close(cart);
     });
     closeLikeList.addEventListener('click', function () {
-      close(like)
+      close(like);
     });
 
     // ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
@@ -128,7 +131,7 @@ window.addEventListener('DOMContentLoaded', () => {
               confirm.style.opacity = `${(progress * -1) + 1}`;
               confirm.style.transform = `translateY(${(progress * 150)}px)`;
             }
-          }
+          },
         });
 
         delGoodsButton.classList.add('goods__item-remove');
@@ -182,7 +185,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (timeFraction > 1) timeFraction = 1;
 
         // текущее состояние анимации
-        let progress = options.timing(timeFraction)
+        let progress = options.timing(timeFraction);
 
         options.draw(progress);
 
@@ -252,7 +255,7 @@ window.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('mouseout', () => {
         likeBtn.style.visibility = 'hidden';
       });
-    })
+    });
 
     // ДОБАВЛЕНИЕ ТОВАРОВ В ИЗБРАННОЕ
     likeButton.forEach((btn, i) => {
@@ -362,9 +365,9 @@ window.addEventListener('DOMContentLoaded', () => {
         calcTotalPrice();
         close(cart);
 
-        alert(`Ваш заказ на сумму ${totalPrice} грн оформлен.\nСпасибо!\n\nНаш оператор скоро свяжеться с Вами.`);
+        alert(`Ваш заказ на сумму ${totalPrice} грн оформлен.\nСпасибо!\n\nНаш оператор скоро свяжется с Вами.`);
       } else {
-        alert('Добавте хотя бы один продукт!');
+        alert('Добавьте хотя бы один продукт!');
       }
 
     });
