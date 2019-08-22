@@ -17,15 +17,22 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   /**
-   * Формирует карточку с товаром и добавляет её на страницу
+   * Формирует карточки с товарами и добавляет их на страницу (используются стили Bootstrap 4)
    *
    * @param {*} arr - массив данных, сформированный из базы данных
    */
   function makeElement(arr) {
     const goodsWrapper = document.querySelector('.goods__wrapper');
+    let newWrapper = document.createElement('div');
+
+    newWrapper.classList.add('row', 'align-items-center');
+    goodsWrapper.appendChild(newWrapper);
 
     arr.forEach(item => {
       let newBlock = document.createElement('div');
+      let newBootstrapBlock = document.createElement('div');
+
+      newBootstrapBlock.classList.add('col-12', 'col-sm-6', 'col-lg-4', 'col-xl-3');
 
       newBlock.classList.add('goods__item');
       newBlock.innerHTML = `
@@ -45,7 +52,9 @@ window.addEventListener('DOMContentLoaded', () => {
               </svg>
             </div>
           `;
-      goodsWrapper.appendChild(newBlock);
+
+      newBootstrapBlock.appendChild(newBlock);
+      newWrapper.appendChild(newBootstrapBlock);
     });
 
   }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -13,13 +13,13 @@
 <body>
     <header>
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center justify-content-md-start">
                 <div class="logo">
                     <img src="logo/logo.svg" alt="logo">
                 </div>
             </div>
-            <div class="row align-items-center">
-                <div class="col-lg-3">
+            <div class="row justify-content-center justify-content-md-start align-items-center">
+                <div class="col-auto col-md-5 col-lg-4 col-xl-3">
                     <form class="search" action="#">
                         <input type="text" placeholder="Я ищу..." class="search__input">
                         <button>
@@ -27,7 +27,7 @@
                         </button>
                     </form>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-md-3 col-lg-2 col-xl-2">
                     <div class="nav" id="like">
                         <div class="nav__item">
                             <svg id="like__img" width="25" height="25" xmlns="http://www.w3.org/2000/svg"
@@ -39,9 +39,9 @@
                         <div class="nav__title">Избранное</div>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-md-3 col-lg-2 col-xl-2">
                     <div class="nav" id="cart">
-                        <div class="nav__item" id="cart__img">
+                        <div class="nav__item">
                             <img src="icons/cart.svg" alt="cart">
                             <div class="nav__badge">0</div>
                         </div>
@@ -53,10 +53,12 @@
     </header>
     <hr>
     <div class="container">
-        <div class="breadcrumbs">
-            <a href="#">Главная</a>
-            /
-            <a href="#">Мобильные телефоны</a>
+        <div class="row justify-content-center justify-content-md-start">
+            <div class="breadcrumbs">
+                <a href="#">Главная</a>
+                /
+                <a href="#">Мобильные телефоны</a>
+            </div>
         </div>
     </div>
     <div class="goods">

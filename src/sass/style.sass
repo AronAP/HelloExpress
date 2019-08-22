@@ -25,15 +25,25 @@ body
         cursor: pointer
         &:focus
             outline: none
+
+@keyframes badge-jump
+	0%, 40%, 60%, 100%
+		transform: translateY(0)
+	30%
+		transform: translateY(-5px)
+	50%
+		transform: translateY(-2.5px)
+
 .nav
     display: flex
     justify-content: center
     align-items: center
+    margin: 10px auto
     cursor: pointer
     &:hover &__item #like__img
         fill: #dc3e2a
-    &:hover #cart__img
-        transform: translateX(0px)
+    &:hover &__badge
+        animation: badge-jump 1s ease-in-out
     &__item
         position: relative
         #like__img
@@ -42,10 +52,6 @@ body
             stroke-width: 1px
             &:hover
                 fill: #dc3e2a
-        &#cart__img
-            transform: translateX(-4px)
-            margin-right: 3px
-            transition: .3s
     &__title
         margin-left: 10px
     &__badge
@@ -53,8 +59,8 @@ body
         top: 0
         right: -5px
         min-width: 16px
-        height: 12px
-        padding: 0 3px
+        height: 13px
+        padding: 0 4px
         text-align: center
         background: #DC3E2A
         border-radius: 8px
@@ -72,12 +78,11 @@ body
         flex-wrap: wrap
     &__item
         position: relative
-        width: 240px
+        max-width: 240px
         padding: 10px
         box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.2)
         border-radius: 4px
-        margin-bottom: 40px
-        margin-right: 35px
+        margin: 20px auto
         transition: 0.3s all
         &:hover
             box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.3)
@@ -145,7 +150,7 @@ body
             stroke: #dc3e2a
             stroke-width: 1px
             stroke-opacity: .7
-.cart
+.cart, .like
     display: none
     position: fixed
     top: 0
@@ -156,7 +161,7 @@ body
         position: absolute
         top: 50%
         left: 50%
-        width: 1024px
+        width: 1170px
         min-height: 200px
         max-height: 640px
         background-color: #fff
@@ -174,12 +179,13 @@ body
             font-size: 24px
             color: rgba(0,0,0, .4)
         .goods__item
-            margin-right: 75px
+            margin: 17px
     &__close
         position: absolute
         top: 25px
         right: 25px
         cursor: pointer
+.cart
     &__total
         font-size: 18px
         span
@@ -200,40 +206,6 @@ body
         &:hover
             box-shadow: 0 0 15px rgba(220, 62, 42, .7)
 .like
-    display: none
-    position: fixed
-    top: 0
-    width: 100%
-    height: 100%
-    background-color: rgba(0,0,0, .3)
-    &__body
-        position: absolute
-        top: 50%
-        left: 50%
-        width: 1024px
-        min-height: 200px
-        max-height: 640px
-        background-color: #fff
-        transform: translateX(-50%) translateY(-50%)
-        padding: 25px
-        overflow: auto
-    &__title
-        font-size: 28px
-        color: rgba(0,0,0, .4)
-    &__wrapper
-        display: flex
-        flex-wrap: wrap
-        margin-top: 25px
-        .empty
-            font-size: 24px
-            color: rgba(0,0,0, .4)
-        .goods__item
-            margin-right: 75px
-    &__close
-        position: absolute
-        top: 25px
-        right: 25px
-        cursor: pointer
     &__count
         font-size: 18px
         span
@@ -241,9 +213,45 @@ body
 .confirm
     display: none
     position: fixed
-    bottom: 50px
-    right: 50px
+    bottom: 5%
+    right: .5%
     width: 100px
     height: 100px
     img
         width: 100%
+
+@media screen and (max-width: 1199px)
+    .cart, .like
+        &__body
+            width: 990px
+        &__wrapper
+            .goods__item
+                margin: 20px 33px
+
+@media screen and (max-width: 991px)
+    .cart, .like
+        &__body
+            width: 760px
+        &__wrapper
+            .goods__item
+                margin: 20px 53px
+
+@media screen and (max-width: 767px)
+    .cart, .like
+        &__body
+            width: 570px
+        &__wrapper
+            .goods__item
+                margin: 20px 130px
+
+@media screen and (max-width: 575px)
+    .cart, .like
+        &__body
+            width: 310px
+            max-height: 540px
+        &__wrapper
+            .goods__item
+                margin: 20px 10px
+    .cart
+        &__confirm
+            width: 260px
