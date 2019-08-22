@@ -5,14 +5,13 @@
 HelloExpress is an online phone store.  
 Generally, is my project where I practice writing **JavaScript** code.
 
+*This project will be further developed.*
+
 ## Tools / Technology ##
 
 What I used during the development:
 
-- **JavaScript (ES7)**
-- HTML5/CCS3
-- Sass/Scss
-- Bootstrap 4
+- ONLY **JavaScript (ES6+)**
 
 ## Features ##
 
