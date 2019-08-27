@@ -232,6 +232,17 @@ body {
           box-shadow: 0 0 15px rgba(220, 62, 42, 0.7);
 }
 
+.goods__btn:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #212529;
+  cursor: auto;
+}
+
+.goods__btn:hover:disabled {
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
 .goods__like {
   position: absolute;
   top: 10px;
@@ -339,6 +350,17 @@ body {
 .cart__confirm:hover {
   -webkit-box-shadow: 0 0 15px rgba(220, 62, 42, 0.7);
           box-shadow: 0 0 15px rgba(220, 62, 42, 0.7);
+}
+
+.cart__confirm:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #212529;
+  cursor: auto;
+}
+
+.cart__confirm:hover:disabled {
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .like__count {

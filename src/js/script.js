@@ -155,6 +155,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         countGoods(cartWrapper, cartBadge, emptyCart);
         calcTotalPrice();
+
+        btn.setAttribute('disabled', '');
+        btn.textContent = 'Уже в корзине';
+
       });
     });
 
@@ -219,6 +223,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (numGoods.length == 0) {
         emptyBlock.style.display = 'block';
+        cartConfirm.setAttribute('disabled', '');
+      } else {
+        cartConfirm.removeAttribute('disabled');
       }
     }
 
@@ -245,7 +252,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
       removeGoodsButton.forEach(close => {
         close.addEventListener('click', () => {
-          close.parentElement.remove();
+
+          let parent = close.parentElement,
+            parentTitle = parent.querySelector('.goods__title'),
+            parentTitleText = parentTitle.textContent;
+
+          goodsTitle.forEach(str => {
+
+            if (str.textContent == parentTitleText) {
+              let parentStr = str.parentElement,
+                parentButton = parentStr.querySelector('.goods__btn');
+
+              parentButton.removeAttribute('disabled');
+              parentButton.textContent = 'Добавить в корзину';
+            }
+
+          });
+
+          parent.remove();
 
           countGoods(cartWrapper, cartBadge, emptyCart);
           calcTotalPrice();
@@ -374,9 +398,12 @@ window.addEventListener('DOMContentLoaded', () => {
         calcTotalPrice();
         close(cart);
 
+        goodsButton.forEach((btn) => {
+          btn.removeAttribute('disabled');
+          btn.textContent = 'Добавить в корзину';
+        });
+
         alert(`Ваш заказ на сумму ${totalPrice} грн оформлен.\nСпасибо!\n\nНаш оператор скоро свяжется с Вами.`);
-      } else {
-        alert('Добавьте хотя бы один продукт!');
       }
 
     });

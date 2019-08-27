@@ -130,6 +130,12 @@ body
             outline: none
         &:hover
             box-shadow: 0 0 15px rgba(220, 62, 42, .7)
+        &:disabled
+            background-color: rgba(0,0,0,.1)
+            color: #212529
+            cursor: auto
+        &:hover:disabled
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3)
     &__like
         position: absolute
         top: 10px
@@ -205,6 +211,13 @@ body
             outline: none
         &:hover
             box-shadow: 0 0 15px rgba(220, 62, 42, .7)
+        &:disabled
+            background-color: rgba(0,0,0,.1)
+            color: #212529
+            cursor: auto
+        &:hover:disabled
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3)
+
 .like
     &__count
         font-size: 18px
