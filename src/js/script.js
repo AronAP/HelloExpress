@@ -39,8 +39,36 @@ window.addEventListener('DOMContentLoaded', () => {
             <img class="goods__img" src="${item.url}" alt="phone">
             <div class="goods__colors">Доступно цветов: 4</div>
             <div class="goods__title">${item.title}</div>
-            <div class="goods__price">
-                <span>${item.price}</span> грн/шт
+            <div class="goods__info">
+              <div class="goods__price">
+                  <span>${item.price}</span> грн/шт
+              </div>
+              <div class="goods__counter">
+                  <button id="minus" disabled="">
+                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 491.858 491.858" xml:space="preserve">
+                    <path d="M465.167,211.613H240.21H26.69c-8.424,0-26.69,
+                    11.439-26.69,34.316s18.267,34.316,26.69,34.316h213.52h224.959
+                      c8.421,0,26.689-11.439,26.689-34.316S473.59,211.613,465.167,211.613z"/>
+                    </svg>
+                  </button>
+                  <span>1</span>
+                  <button id="plus">
+                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 491.86 491.86" xml:space="preserve">
+                      <path d="M465.167,211.614H280.245V26.691c0-8.424-11.439-26.69-34.316-26.69s-34.316,
+                      18.267-34.316,26.69v184.924H26.69 C18.267,211.614,0,223.053,0,245.929s18.267,
+                      34.316,26.69,34.316h184.924v184.924c0,8.422,11.438,26.69,34.316,26.69 s34.316-18.268,
+                      34.316-26.69V280.245H465.17c8.422,0,26.69-11.438,26.69-34.316S473.59,211.614,465.167,211.614z"/>
+                    </svg>
+                  </button>
+              </div>
+              <div class="goods__total-price">
+                  <div>Сумма</div>
+                  <span>0</span> грн
+              </div>
             </div>
             <button class="goods__btn">Добавить в корзину</button>
             <div class="goods__like">
@@ -115,6 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
     closeCartButton.addEventListener('click', function () {
       close(cart);
     });
+
     closeLikeList.addEventListener('click', function () {
       close(like);
     });
@@ -123,7 +152,7 @@ window.addEventListener('DOMContentLoaded', () => {
     goodsButton.forEach((btn, i) => {
       btn.addEventListener('click', () => {
         let cloneGoods = goods[i].cloneNode(true),
-          trigger = cloneGoods.querySelector('button'),
+          trigger = cloneGoods.querySelector('.goods__btn'),
           triggerLike = cloneGoods.querySelector('.goods__like'),
           delGoodsButton = document.createElement('div');
 
@@ -153,12 +182,13 @@ window.addEventListener('DOMContentLoaded', () => {
           emptyCart.style.display = 'none';
         }
 
-        countGoods(cartWrapper, cartBadge, emptyCart);
-        calcTotalPrice();
-
         btn.setAttribute('disabled', '');
         btn.textContent = 'Уже в корзине';
 
+        countGoods(cartWrapper, cartBadge, emptyCart);
+        selectTheNumberOfGoods();
+        calcTotalPriceOfOneGoods();
+        calcTotalPrice();
       });
     });
 
@@ -234,7 +264,8 @@ window.addEventListener('DOMContentLoaded', () => {
      *
      */
     function calcTotalPrice() {
-      const priceGoods = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span');
+      const priceGoods = cartWrapper.querySelectorAll('.goods__total-price > span');
+
       let totalPrice = 0;
 
       priceGoods.forEach(price => {
@@ -277,6 +308,65 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    /**
+     * Добавляет или убавляет на 1 количество одного товара в корзине
+     *
+     */
+    function selectTheNumberOfGoods() {
+      const counter = cartWrapper.querySelectorAll('.goods__counter');
+
+      counter.forEach(item => {
+        const counterPlus = item.querySelector('#plus'),
+          counterMinus = item.querySelector('#minus'),
+          counterNum = item.querySelector('span');
+
+        let num = 1;
+
+        counterPlus.addEventListener('click', () => {
+          counterNum.textContent = ++num;
+
+          counterMinus.removeAttribute('disabled', '');
+
+          if (num == 9) {
+            counterPlus.setAttribute('disabled', '');
+          }
+
+          calcTotalPriceOfOneGoods();
+        });
+
+        counterMinus.addEventListener('click', () => {
+          counterNum.textContent = --num;
+
+          counterPlus.removeAttribute('disabled', '');
+
+          if (num <= 1) {
+            counterMinus.setAttribute('disabled', '');
+          }
+
+          calcTotalPriceOfOneGoods();
+        });
+      });
+    }
+
+    /**
+     * Подсчитывает общую стоимость одного товара в корзине
+     *
+     */
+    function calcTotalPriceOfOneGoods() {
+      const goodsInCart = cartWrapper.querySelectorAll('.goods__item');
+
+      goodsInCart.forEach(item => {
+
+        let priceOneGoods = item.querySelector('.goods__price > span'),
+          counterNum = item.querySelector('.goods__counter > span'),
+          priceAllGoods = item.querySelector('.goods__total-price > span');
+
+        priceAllGoods.textContent = priceOneGoods.textContent * counterNum.textContent;
+
+        calcTotalPrice();
+      });
+    }
+
     // Показать/скрыть кнопку "Добавить в избранное"
     goods.forEach(item => {
       const likeBtn = item.querySelector('.goods__like');
@@ -313,7 +403,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (svg.style.fill == 'rgb(220, 62, 42)') {
 
           let cloneGoods = goods[i].cloneNode(true),
-            trigger = cloneGoods.querySelector('button'),
+            trigger = cloneGoods.querySelector('.goods__btn'),
             triggerLike = cloneGoods.querySelector('.goods__like'),
             delGoodsButton = document.createElement('div');
 

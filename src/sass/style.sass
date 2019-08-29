@@ -116,6 +116,8 @@ body
         color: #DC3E2A
         margin-top: 5px
         font-weight: bold
+    &__counter, &__total-price
+        display: none
     &__btn
         width: 100%
         height: 40px
@@ -217,7 +219,71 @@ body
             cursor: auto
         &:hover:disabled
             box-shadow: 0 0 15px rgba(0, 0, 0, .3)
-
+    .goods
+        &__item
+            display: flex
+            flex-flow: column wrap
+            flex-grow: 1
+            min-width: 100%
+            height: 220px
+            padding: 20px
+            margin: 20px 0
+        &__img
+            width: 14%
+        &__colors
+            width: 14%
+        &__title
+            width: 78%
+            margin: 0 0 15px
+        &__info
+            display: flex
+            justify-content: space-between
+            align-items: center
+        &__price
+            text-align: left
+            width: max-content
+            background-color: #ffe8c6
+            padding: 6px 16px
+            border-radius: 5px
+            margin: 0
+        &__counter
+            display: block
+            margin-left: 100px
+            button
+                border: none
+                color: #003267
+                background-color: transparent
+                padding: 0 10px
+                outline: none
+                cursor: pointer
+                vertical-align: text-bottom
+                svg
+                    fill: #003267
+                    align-self: center
+                    &:hover
+                        fill: #DC3E2A
+                &:disabled svg
+                    fill: rgba(0,0,0,.3)
+                    cursor: auto
+                    &:hover
+                        fill: rgba(0,0,0,.5)
+            span
+                border: 1px solid rgba(0, 0, 0, 0.4)
+                border-radius: 5px
+                text-align: center
+                cursor: default
+                padding: 0 20px
+        &__total-price
+            display: block
+            font-size: 1.3em
+            min-width: 150px;
+            text-align: right;
+            div
+                position: absolute
+                top: 25px
+                right: 25px
+                font-size: 0.7em
+                color: rgba(0, 0, 0, 0.4)
 .like
     &__count
         font-size: 18px
