@@ -80,12 +80,18 @@ body
         position: relative
         max-width: 240px
         padding: 10px
+        background-color: #fff
         box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.2)
         border-radius: 4px
         margin: 20px auto
         transition: 0.3s all
         &:hover
+            position: absolute
+            top: 0
+            right: 0
+            left: 0
             box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.3)
+            z-index: 10
         &-remove
             position: absolute
             top: -10px
@@ -102,6 +108,7 @@ body
                 color: #DC3E2A
     &__img
         width: 220px
+        margin: auto
         object-fit: cover
     &__colors
         font-size: 12px
@@ -188,6 +195,8 @@ body
             color: rgba(0,0,0, .4)
         .goods__item
             margin: 17px
+            &:hover
+                position: relative
     &__close
         position: absolute
         top: 25px
@@ -227,14 +236,14 @@ body
             min-width: 100%
             height: 220px
             padding: 20px
-            margin: 20px 0
-        &__img
-            width: 14%
-        &__colors
-            width: 14%
+            margin: 0 0 40px 0
+        &__img, &__colors
+            margin: 0
+            width: 15%
         &__title
             width: 78%
             margin: 0 0 15px
+            padding-right: 100px
         &__info
             display: flex
             justify-content: space-between
@@ -253,7 +262,7 @@ body
                 border: none
                 color: #003267
                 background-color: transparent
-                padding: 0 10px
+                padding: 0
                 outline: none
                 cursor: pointer
                 vertical-align: text-bottom
@@ -272,12 +281,13 @@ body
                 border-radius: 5px
                 text-align: center
                 cursor: default
+                margin: 0 10px
                 padding: 0 20px
         &__total-price
             display: block
             font-size: 1.3em
-            min-width: 150px;
-            text-align: right;
+            min-width: 150px
+            text-align: right
             div
                 position: absolute
                 top: 25px
@@ -298,39 +308,118 @@ body
     height: 100px
     img
         width: 100%
+.footer
+    text-align: center
+    margin: 1rem 0
+    padding: 1rem 0 0
+    border-top: 1px solid rgba(0,0,0,.1)
+    a
+        color: #DC3E2A
 
 @media screen and (max-width: 1199px)
     .cart, .like
         &__body
             width: 990px
+    .like
         &__wrapper
             .goods__item
                 margin: 20px 33px
+    .cart
+        .goods
+            &__img, &__colors
+                width: 18%
+            &__title
+                width: 75%
+                padding-right: 130px
 
 @media screen and (max-width: 991px)
     .cart, .like
         &__body
             width: 760px
+    .like
         &__wrapper
             .goods__item
                 margin: 20px 53px
+    .cart
+        .goods
+            &__img, &__colors
+                width: 24%
+                margin-right: 20px
+            &__title
+                width: 72%
+            &__info
+                width: 72%
+            &__counter
+                margin-left: 50px
+            &__total-price
+                font-size: 1.2em
+                min-width: 100px
+                div
+                    font-size: 0.8em
 
 @media screen and (max-width: 767px)
+    .goods
+        &__item
+            &:hover
+                position: relative
     .cart, .like
         &__body
             width: 570px
+    .like
         &__wrapper
             .goods__item
                 margin: 20px 130px
+    .cart
+        .goods
+            &__item
+                justify-content: center
+                height: 320px
+            &__img, &__colors
+                margin-right: 20px
+                width: 41%
+            &__title
+                width: 54%
+                padding-right: 0
+            &__info
+                width: 54%
+                flex-direction: column
+                align-items: center
+            &__counter
+                display: flex
+                margin: 15px 0
+            &__total-price
+                text-align: left
+                font-size: 1.1em
+                div
+                    position: relative
+                    right: 0
+                    font-size: 1em
+                    top: 0
+                    display: inline-block
+                span
+                    margin-left: 10px
 
 @media screen and (max-width: 575px)
     .cart, .like
         &__body
             width: 310px
             max-height: 540px
+    .like
         &__wrapper
             .goods__item
                 margin: 20px 10px
     .cart
         &__confirm
             width: 260px
+        .goods
+            &__item
+                flex-flow: column nowrap
+                height: auto
+            &__img, &__colors
+                margin: auto
+                width: 100%
+            &__title
+                width: 100%
+                margin-top: 15px
+            &__info
+                width: 100%

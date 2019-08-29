@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const goodsWrapper = document.querySelector('.goods__wrapper');
     let newWrapper = document.createElement('div');
 
-    newWrapper.classList.add('row', 'align-items-center');
+    newWrapper.classList.add('row', 'align-items-start');
     goodsWrapper.appendChild(newWrapper);
 
     arr.forEach(item => {
@@ -176,14 +176,22 @@ window.addEventListener('DOMContentLoaded', () => {
         cloneGoods.appendChild(delGoodsButton);
         delGoodsButton.innerHTML = '&times;';
 
+        const parent = btn.parentElement,
+          childGoodsTitle = parent.querySelector('.goods__title'),
+          fullGoodsTitle = childGoodsTitle.dataset.titleFull;
+
         cartWrapper.appendChild(cloneGoods);
+
+        let cloneGoodsTitle = cloneGoods.querySelector('.goods__title');
+
+        cloneGoodsTitle.textContent = fullGoodsTitle;
 
         if (emptyCart) {
           emptyCart.style.display = 'none';
         }
 
         btn.setAttribute('disabled', '');
-        btn.textContent = 'Уже в корзине';
+        btn.textContent = 'Товар в корзине';
 
         countGoods(cartWrapper, cartBadge, emptyCart);
         selectTheNumberOfGoods();
@@ -200,11 +208,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
       goodsTitle.forEach(str => {
 
+        str.setAttribute('data-title-full', str.textContent);
+
         if (str.textContent.length <= 49) {
           return;
         } else {
           const newStr = `${str.textContent.slice(0, 49)}...`;
           str.textContent = newStr;
+          str.setAttribute('data-title-short', newStr);
         }
 
       });
@@ -284,13 +295,13 @@ window.addEventListener('DOMContentLoaded', () => {
       removeGoodsButton.forEach(close => {
         close.addEventListener('click', () => {
 
-          let parent = close.parentElement,
+          const parent = close.parentElement,
             parentTitle = parent.querySelector('.goods__title'),
-            parentTitleText = parentTitle.textContent;
+            shortGoodsTitle = parentTitle.dataset.titleShort;
 
           goodsTitle.forEach(str => {
 
-            if (str.textContent == parentTitleText) {
+            if (str.textContent == shortGoodsTitle) {
               let parentStr = str.parentElement,
                 parentButton = parentStr.querySelector('.goods__btn');
 
@@ -413,7 +424,17 @@ window.addEventListener('DOMContentLoaded', () => {
           delGoodsButton.classList.add('goods__item-remove');
           cloneGoods.appendChild(delGoodsButton);
           delGoodsButton.innerHTML = '&times;';
+
+          const parent = btn.parentElement,
+            childGoodsTitle = parent.querySelector('.goods__title'),
+            shortGoodsTitle = childGoodsTitle.dataset.titleShort;
+
           likeWrapper.appendChild(cloneGoods);
+
+          let cloneGoodsTitle = cloneGoods.querySelector('.goods__title');
+
+          cloneGoodsTitle.textContent = shortGoodsTitle;
+
 
           if (emptyLike) {
             emptyLike.style.display = 'none';
@@ -426,10 +447,10 @@ window.addEventListener('DOMContentLoaded', () => {
             const cloneLikeGoodsTitle = cloneItem.querySelector('.goods__title'),
               cloneLikeGoodsTitleText = cloneLikeGoodsTitle.textContent,
               parent = btn.parentElement,
-              parentTitle = parent.querySelector('.goods__title'),
-              parentTitleText = parentTitle.textContent;
+              childGoodsTitle = parent.querySelector('.goods__title'),
+              shortGoodsTitle = childGoodsTitle.dataset.titleShort;
 
-            if (cloneLikeGoodsTitleText == parentTitleText) {
+            if (cloneLikeGoodsTitleText == shortGoodsTitle) {
               cloneItem.remove();
             }
           });
@@ -453,11 +474,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
           let parent = close.parentElement,
             parentTitle = parent.querySelector('.goods__title'),
-            parentTitleText = parentTitle.textContent;
+            shortGoodsTitle = parentTitle.dataset.titleShort;
 
           goodsTitle.forEach(str => {
 
-            if (str.textContent == parentTitleText) {
+            if (str.textContent == shortGoodsTitle) {
               let parentStr = str.parentElement,
                 parentLikePicButton = parentStr.querySelector('.goods__like > svg');
 
@@ -497,6 +518,32 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
     });
+
+    /**
+     * Показывает карточку с полным заголовком при наведении
+     *
+     */
+    function showFullTitle() {
+      goods.forEach(item => {
+        const title = item.querySelector('.goods__title');
+
+        item.addEventListener('mouseover', () => {
+          let fullTitle = title.dataset.titleFull;
+
+          title.textContent = fullTitle;
+        });
+
+        item.addEventListener('mouseout', () => {
+          let shortTitle = title.dataset.titleShort;
+
+          title.textContent = shortTitle;
+        });
+      });
+    }
+
+    if (document.documentElement.clientWidth > 768) {
+      showFullTitle();
+    }
 
   });
 
