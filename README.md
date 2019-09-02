@@ -2,7 +2,7 @@
 
 ## Description ##
 
-HelloExpress is an online phone store.  
+HelloExpress is an online phones store.  
 Generally, is my project where I practice writing **JavaScript** code.
 
 *This project will be further developed.*

@@ -473,7 +473,7 @@ window.addEventListener('DOMContentLoaded', () => {
       goods.forEach(item => {
         const title = item.querySelector('.goods__title');
 
-        item.addEventListener('touchstart', () => {
+        title.addEventListener('touchstart', () => {
           let fullTitle = title.dataset.titleFull;
           let shortTitle = title.dataset.titleShort;
 
@@ -534,12 +534,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
           cloneGoodsTitle.textContent = shortGoodsTitle;
 
-          if (countGoods(likeWrapper, countLike) == 0) {
-            emptyLike.style.display = 'block';
-          } else {
-            emptyLike.style.display = 'none';
-          }
-
         } else {
           // Если кнопка уже нажата
           const cloneLikeGoods = likeWrapper.querySelectorAll('.goods__item');
@@ -559,6 +553,12 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         countGoods(likeWrapper, countLike);
+
+        if (countGoods(likeWrapper, countLike) == 0) {
+          emptyLike.style.display = 'block';
+        } else {
+          emptyLike.style.display = 'none';
+        }
 
       });
     });
