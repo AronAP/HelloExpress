@@ -85,7 +85,7 @@ body
         border-radius: 4px
         margin: 20px auto
         transition: 0.3s all
-        &:hover
+        &:hover, &:focus, &:active
             position: absolute
             top: 0
             right: 0
@@ -358,10 +358,6 @@ body
                     font-size: 0.8em
 
 @media screen and (max-width: 767px)
-    .goods
-        &__item
-            &:hover
-                position: relative
     .cart, .like
         &__body
             width: 570px
@@ -400,6 +396,10 @@ body
                     margin-left: 10px
 
 @media screen and (max-width: 575px)
+    .goods
+        &__item
+            &:hover, &:focus, &:active
+                position: relative
     .cart, .like
         &__body
             width: 310px

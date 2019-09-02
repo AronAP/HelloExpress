@@ -164,7 +164,7 @@ body {
   transition: 0.3s all;
 }
 
-.goods__item:hover {
+.goods__item:hover, .goods__item:focus, .goods__item:active {
   position: absolute;
   top: 0;
   right: 0;
@@ -566,9 +566,6 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-  .goods__item:hover {
-    position: relative;
-  }
   .cart__body, .like__body {
     width: 570px;
   }
@@ -622,6 +619,9 @@ body {
 }
 
 @media screen and (max-width: 575px) {
+  .goods__item:hover, .goods__item:focus, .goods__item:active {
+    position: relative;
+  }
   .cart__body, .like__body {
     width: 310px;
     max-height: 540px;
@@ -651,4 +651,3 @@ body {
     width: 100%;
   }
 }
-/*# sourceMappingURL=style.css.map */

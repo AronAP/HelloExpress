@@ -39,11 +39,15 @@ window.addEventListener('DOMContentLoaded', () => {
             <img class="goods__img" src="${item.url}" alt="phone">
             <div class="goods__colors">Доступно цветов: 4</div>
             <div class="goods__title">${item.title}</div>
+
             <div class="goods__info">
+
               <div class="goods__price">
                   <span>${item.price}</span> грн/шт
               </div>
+
               <div class="goods__counter">
+
                   <button id="minus" disabled="">
                     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -53,7 +57,9 @@ window.addEventListener('DOMContentLoaded', () => {
                       c8.421,0,26.689-11.439,26.689-34.316S473.59,211.613,465.167,211.613z"/>
                     </svg>
                   </button>
+
                   <span>1</span>
+
                   <button id="plus">
                     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -64,13 +70,18 @@ window.addEventListener('DOMContentLoaded', () => {
                       34.316-26.69V280.245H465.17c8.422,0,26.69-11.438,26.69-34.316S473.59,211.614,465.167,211.614z"/>
                     </svg>
                   </button>
+
               </div>
+
               <div class="goods__total-price">
                   <div>Сумма</div>
                   <span>0</span> грн
               </div>
+
             </div>
+
             <button class="goods__btn">Добавить в корзину</button>
+
             <div class="goods__like">
               <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"
                   xmlns:svg="http://www.w3.org/2000/svg">
@@ -108,7 +119,8 @@ window.addEventListener('DOMContentLoaded', () => {
       confirm = document.querySelector('.confirm'),
       cartConfirm = document.querySelector('.cart__confirm'),
       emptyCart = cartWrapper.querySelector('.empty'),
-      emptyLike = likeWrapper.querySelector('.empty');
+      emptyLike = likeWrapper.querySelector('.empty'),
+      searchInput = document.querySelector('.search__input');
 
     /**
      * Показывает модальное окно
@@ -186,14 +198,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
         cloneGoodsTitle.textContent = fullGoodsTitle;
 
-        if (emptyCart) {
-          emptyCart.style.display = 'none';
-        }
-
         btn.setAttribute('disabled', '');
         btn.textContent = 'Товар в корзине';
 
-        countGoods(cartWrapper, cartBadge, emptyCart);
+        countGoods(cartWrapper, cartBadge);
+
+        if (countGoods(cartWrapper, cartBadge) == 0) {
+          emptyCart.style.display = 'block';
+          cartConfirm.setAttribute('disabled', '');
+        } else {
+          emptyCart.style.display = 'none';
+          cartConfirm.removeAttribute('disabled');
+        }
+
         selectTheNumberOfGoods();
         calcTotalPriceOfOneGoods();
         calcTotalPrice();
@@ -255,19 +272,14 @@ window.addEventListener('DOMContentLoaded', () => {
      *
      * @param {*} wrapper - обертка для товаров
      * @param {*} countSpan - блок, с числом товаров
-     * @param {*} emptyBlock - блок с надписью "пусто"
+     * @returns {number} количество товаров
      */
-    function countGoods(wrapper, countSpan, emptyBlock) {
+    function countGoods(wrapper, countSpan) {
       let numGoods = wrapper.querySelectorAll('.goods__item');
 
       countSpan.textContent = numGoods.length;
 
-      if (numGoods.length == 0) {
-        emptyBlock.style.display = 'block';
-        cartConfirm.setAttribute('disabled', '');
-      } else {
-        cartConfirm.removeAttribute('disabled');
-      }
+      return numGoods.length;
     }
 
     /**
@@ -282,6 +294,7 @@ window.addEventListener('DOMContentLoaded', () => {
       priceGoods.forEach(price => {
         totalPrice += +price.textContent;
       });
+
       total.textContent = totalPrice;
     }
 
@@ -313,7 +326,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
           parent.remove();
 
-          countGoods(cartWrapper, cartBadge, emptyCart);
+          countGoods(cartWrapper, cartBadge);
+
+          if (countGoods(cartWrapper, cartBadge) == 0) {
+            emptyCart.style.display = 'block';
+            cartConfirm.setAttribute('disabled', '');
+          } else {
+            emptyCart.style.display = 'none';
+            cartConfirm.removeAttribute('disabled');
+          }
+
           calcTotalPrice();
         });
       });
@@ -378,18 +400,95 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Показать/скрыть кнопку "Добавить в избранное"
-    goods.forEach(item => {
-      const likeBtn = item.querySelector('.goods__like');
+    /**
+     * Показать/скрыть кнопку "Добавить в избранное" на больших экранах
+     *
+     */
+    function showLikeButtonLarge() {
+      goods.forEach(item => {
+        const likeBtn = item.querySelector('.goods__like');
 
-      item.addEventListener('mouseover', () => {
+        item.addEventListener('mouseover', () => {
+          likeBtn.style.visibility = 'visible';
+        });
+
+        item.addEventListener('mouseout', () => {
+          likeBtn.style.visibility = 'hidden';
+        });
+
+      });
+    }
+
+    if (document.documentElement.clientWidth >= 768) {
+      showLikeButtonLarge();
+    }
+
+    /**
+     * Показать/скрыть кнопку "Добавить в избранное" на маленьких экранах
+     *
+     */
+    function showLikeButtonSmall() {
+      goods.forEach(item => {
+        const likeBtn = item.querySelector('.goods__like');
+
         likeBtn.style.visibility = 'visible';
       });
+    }
 
-      item.addEventListener('mouseout', () => {
-        likeBtn.style.visibility = 'hidden';
+    if (document.documentElement.clientWidth < 768) {
+      showLikeButtonSmall();
+    }
+
+    /**
+     * Показать/скрыть карточку с полным заголовком на больших экранах
+     *
+     */
+    function showFullTitleLarge() {
+      goods.forEach(item => {
+        const title = item.querySelector('.goods__title');
+
+        item.addEventListener('mouseover', () => {
+          let fullTitle = title.dataset.titleFull;
+
+          title.textContent = fullTitle;
+        });
+
+        item.addEventListener('mouseout', () => {
+          let shortTitle = title.dataset.titleShort;
+
+          title.textContent = shortTitle;
+        });
       });
-    });
+    }
+
+    if (document.documentElement.clientWidth >= 768) {
+      showFullTitleLarge();
+    }
+
+    /**
+     * Показать/скрыть карточку с полным заголовком на маленьких экранах
+     *
+     */
+    function showFullTitleSmall() {
+      goods.forEach(item => {
+        const title = item.querySelector('.goods__title');
+
+        item.addEventListener('touchstart', () => {
+          let fullTitle = title.dataset.titleFull;
+          let shortTitle = title.dataset.titleShort;
+
+          if (title.textContent == fullTitle) {
+            title.textContent = shortTitle;
+          } else {
+            title.textContent = fullTitle;
+          }
+        });
+      });
+    }
+
+    if (document.documentElement.clientWidth < 768) {
+      showFullTitleSmall();
+    }
 
     // ДОБАВЛЕНИЕ ТОВАРОВ В ИЗБРАННОЕ
     likeButton.forEach((btn, i) => {
@@ -435,10 +534,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
           cloneGoodsTitle.textContent = shortGoodsTitle;
 
-
-          if (emptyLike) {
+          if (countGoods(likeWrapper, countLike) == 0) {
+            emptyLike.style.display = 'block';
+          } else {
             emptyLike.style.display = 'none';
           }
+
         } else {
           // Если кнопка уже нажата
           const cloneLikeGoods = likeWrapper.querySelectorAll('.goods__item');
@@ -457,7 +558,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         }
 
-        countGoods(likeWrapper, countLike, emptyLike);
+        countGoods(likeWrapper, countLike);
 
       });
     });
@@ -489,13 +590,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
           parent.remove();
 
-          countGoods(likeWrapper, countLike, emptyLike);
+          countGoods(likeWrapper, countLike);
+
+          if (countGoods(likeWrapper, countLike) == 0) {
+            emptyLike.style.display = 'block';
+          } else {
+            emptyLike.style.display = 'none';
+          }
+
         });
       });
     }
 
     // Оформления заказа
     cartConfirm.addEventListener('click', () => {
+
       let allItems = cartWrapper.querySelectorAll('.goods__item');
 
       if (allItems.length > 0) {
@@ -503,7 +612,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
         allItems.forEach(item => {
           item.remove();
-          countGoods(cartWrapper, cartBadge, emptyCart);
+          countGoods(cartWrapper, cartBadge);
+
+          if (countGoods(cartWrapper, cartBadge) == 0) {
+            emptyCart.style.display = 'block';
+            cartConfirm.setAttribute('disabled', '');
+          } else {
+            emptyCart.style.display = 'none';
+            cartConfirm.removeAttribute('disabled');
+          }
         });
 
         calcTotalPrice();
@@ -520,30 +637,18 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * Показывает карточку с полным заголовком при наведении
+     * Выводит сообщение об отсутствии поиска на сайте
      *
      */
-    function showFullTitle() {
-      goods.forEach(item => {
-        const title = item.querySelector('.goods__title');
+    function attemptToSearch() {
 
-        item.addEventListener('mouseover', () => {
-          let fullTitle = title.dataset.titleFull;
-
-          title.textContent = fullTitle;
-        });
-
-        item.addEventListener('mouseout', () => {
-          let shortTitle = title.dataset.titleShort;
-
-          title.textContent = shortTitle;
-        });
+      searchInput.addEventListener('click', function () {
+        this.blur();
+        alert('Здравствуйте, функция поиска пока не работает!');
       });
-    }
 
-    if (document.documentElement.clientWidth > 768) {
-      showFullTitle();
     }
+    attemptToSearch();
 
   });
 
