@@ -29,4 +29,9 @@ What I used during the development:
 12. cropping titles in goods
 13. animation when adding goods to the cart
 14. placing orders
-15. automatic content loading with AJAX
+15. goods cannot be added to the cart again
+16. selection of the quantity of one product in the cart and calculation of the total price of these goods
+17. when you hover over the product card it shows the whole title (only for large and medium screens)
+18. automatic content loading with AJAX
+
+**TO BE CONTINUED...**
