@@ -310,11 +310,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const parent = close.parentElement,
             parentTitle = parent.querySelector('.goods__title'),
-            shortGoodsTitle = parentTitle.dataset.titleShort;
+            shortGoodsTitle = parentTitle.dataset.titleShort,
+            fullGoodsTitle = parentTitle.dataset.titleFull;
 
           goodsTitle.forEach(str => {
 
-            if (str.textContent == shortGoodsTitle) {
+            if (str.textContent == shortGoodsTitle || str.textContent == fullGoodsTitle) {
               let parentStr = str.parentElement,
                 parentButton = parentStr.querySelector('.goods__btn');
 
@@ -575,11 +576,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
           let parent = close.parentElement,
             parentTitle = parent.querySelector('.goods__title'),
-            shortGoodsTitle = parentTitle.dataset.titleShort;
+            shortGoodsTitle = parentTitle.dataset.titleShort,
+            fullGoodsTitle = parentTitle.dataset.titleFull;
 
           goodsTitle.forEach(str => {
 
-            if (str.textContent == shortGoodsTitle) {
+            if (str.textContent == shortGoodsTitle || str.textContent == fullGoodsTitle) {
               let parentStr = str.parentElement,
                 parentLikePicButton = parentStr.querySelector('.goods__like > svg');
 
